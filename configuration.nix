@@ -39,6 +39,7 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
+  
   security.rtkit.enable = true;
 
   networking.networkmanager.enable = true;
@@ -65,6 +66,7 @@
     pkgs.kdePackages.kdeconnect-kde
     alacritty
     git
+    openssh
   ];
 
   # Open ports in the firewall.

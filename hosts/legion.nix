@@ -23,6 +23,6 @@
     packages = with pkgs; [ ];
   };
 
-  networking.hostName = "nixos"; 
+  networking.hostName = "legion"; 
 
 }
