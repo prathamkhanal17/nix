@@ -3,14 +3,17 @@
 {
   imports = [
     ./hosts/legion.nix# You can dynamically choose host later if needed
+    ./hardware-configuration.nix
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  # Bootloader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
   nixpkgs.config.allowUnfree = true;
 
-  time.timeZone = "Asia/Kathmandu";
-  i18n.defaultLocale = "en_US.UTF-8";
 
   services.xserver.enable = true;
 
@@ -44,13 +47,6 @@
   users.defaultUserShell = pkgs.zsh;
   environment.shells = [ pkgs.zsh ];
 
-  users.users.prathamk = {
-    isNormalUser = true;
-    description = "Pratham Khanal";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [ ];
-  };
-
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
@@ -70,4 +66,13 @@
     alacritty
     git
   ];
+
+  # Open ports in the firewall.
+   networking.firewall.allowedTCPPortRanges = [ {from=1714; to=1764;} ]; #kde connect
+   networking.firewall.allowedUDPPortRanges = [ {from=1714; to=1764;} ]; #kde connect
+  # Or disable the firewall altogether.
+  # networking.firewall.enable = false;
+
+  system.stateVersion = "25.05"; # Did you read the comment?
+  nix.binaryCaches = [ "https://aseipp-nix-cache.global.ssl.fastly.net" ];
 }

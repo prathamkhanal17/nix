@@ -6,7 +6,7 @@
   home.stateVersion = "25.05";
 
   home.packages = [
-    # You can add more packages here if needed
+   pkgs.openssh # You can add more packages here if needed
   ];
 
   programs.zsh = {
