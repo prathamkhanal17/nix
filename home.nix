@@ -2,6 +2,7 @@
 {
   imports = [
     ./modules/home/zsh.nix
+    ./modules/home/gtk.nix
   ];
   home.username = "prathamk";
   home.homeDirectory = "/home/prathamk";
