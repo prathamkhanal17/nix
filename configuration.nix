@@ -2,8 +2,9 @@
 
 {
   imports = [
-    ./hosts/legion.nix# You can dynamically choose host later if needed
+    ./hosts/legion.nix
     ./hardware-configuration.nix
+    ./modules/system/gnome.nix
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -13,17 +14,6 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   nixpkgs.config.allowUnfree = true;
-
-
-  services.xserver.enable = true;
-
-  services.displayManager = {
-    sddm.enable = true;
-    autoLogin.enable = false;
-    autoLogin.user = "prathamk";
-  };
-
-  services.desktopManager.plasma6.enable = true;
 
   services.xserver.xkb = {
     layout = "us";
@@ -67,6 +57,9 @@
     alacritty
     git
     openssh
+    pkgs.tree
+    pkgs.wl-clipboard
+    tmux
   ];
 
   # Open ports in the firewall.
