@@ -48,7 +48,6 @@
     wget
     vscode
     google-chrome
-    python314
     fastfetch
     lshw
     btop
@@ -69,5 +68,5 @@
   # networking.firewall.enable = false;
 
   system.stateVersion = "25.05"; # Did you read the comment?
-  nix.binaryCaches = [ "https://aseipp-nix-cache.global.ssl.fastly.net" ];
+  nix.settings.substituters = [ "https://aseipp-nix-cache.global.ssl.fastly.net" ];
 }
