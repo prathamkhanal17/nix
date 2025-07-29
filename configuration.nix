@@ -5,6 +5,7 @@
     ./hosts/legion.nix
     ./hardware-configuration.nix
     ./modules/system/gnome.nix
+    ./modules/system/vm.nix
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -47,9 +48,9 @@
     vim
     wget
     vscode
-    google-chrome
     fastfetch
     lshw
+    google-chrome
     btop
     yazi
     pkgs.kdePackages.kdeconnect-kde
@@ -59,13 +60,18 @@
     pkgs.tree
     pkgs.wl-clipboard
     tmux
+    pkgs.devenv
+    pkgs.waydroid
+    pkgs.ollama
+    pkgs.youtube-music
+    firefox
   ];
 
   # Open ports in the firewall.
-   networking.firewall.allowedTCPPortRanges = [ {from=1714; to=1764;} ]; #kde connect
-   networking.firewall.allowedUDPPortRanges = [ {from=1714; to=1764;} ]; #kde connect
+  # networking.firewall.allowedTCPPortRanges = [ {from=1714; to=1764;} ]; #kde connect
+  # networking.firewall.allowedUDPPortRanges = [ {from=1714; to=1764;} ]; #kde connect
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+   networking.firewall.enable = false;
 
   system.stateVersion = "25.05"; # Did you read the comment?
   nix.settings.substituters = [ "https://aseipp-nix-cache.global.ssl.fastly.net" ];
