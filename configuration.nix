@@ -6,6 +6,7 @@
     ./hardware-configuration.nix
     ./modules/system/gnome.nix
     ./modules/system/vm.nix
+    ./modules/home/system/hyprland.nix
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -53,7 +54,7 @@
     btop
     yazi
     pkgs.kdePackages.kdeconnect-kde
-    alacritty
+    kitty
     git
     openssh
     pkgs.tree
