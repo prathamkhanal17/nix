@@ -3,7 +3,7 @@
 {
   imports = [
     ./hosts/legion.nix
-     /etc/nixos/hardware-configuration.nix
+    ./hardware-configuration.nix
     ./modules/system/gnome.nix
     ./modules/system/vm.nix
   ];
@@ -45,7 +45,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    nvim
+    neovim
     wget
     vscode
     fastfetch
