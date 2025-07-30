@@ -3,7 +3,7 @@
 {
   imports = [
     ./hosts/legion.nix
-    ./hardware-configuration.nix
+     /etc/nixos/hardware-configuration.nix
     ./modules/system/gnome.nix
     ./modules/system/vm.nix
   ];
@@ -45,12 +45,11 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    vim
+    nvim
     wget
     vscode
     fastfetch
     lshw
-    google-chrome
     btop
     yazi
     pkgs.kdePackages.kdeconnect-kde
