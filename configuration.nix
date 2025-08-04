@@ -47,7 +47,6 @@
 
   environment.systemPackages = with pkgs; [
     neovim
-    wget
     fastfetch
     lshw
     btop
@@ -56,7 +55,6 @@
     git
     openssh
     tree
-    wl-clipboard
     tmux
     devenv
   ];

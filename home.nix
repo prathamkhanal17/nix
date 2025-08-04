@@ -13,9 +13,12 @@
   rofi-wayland
   waybar
   swww
-  python3
-  python3Packages.requests
   wl-clipboard
+  wlogout
+  swaynotificationcenter
+  (python313.withPackages (ps: with ps; [ 
+    requests
+    ]))
   ];
 
   programs.fzf = {
