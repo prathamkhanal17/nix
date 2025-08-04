@@ -10,6 +10,8 @@
       gedit = "gnome-text-editor";
     };
 
+
+
     oh-my-zsh = {
       enable = true;
       theme = "agnoster";

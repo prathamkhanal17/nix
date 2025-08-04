@@ -6,7 +6,7 @@
     ./hardware-configuration.nix
     ./modules/system/gnome.nix
     ./modules/system/vm.nix
-    ./modules/home/system/hyprland.nix
+    ./modules/system/hyprland.nix
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -48,23 +48,17 @@
   environment.systemPackages = with pkgs; [
     neovim
     wget
-    vscode
     fastfetch
     lshw
     btop
     yazi
-    pkgs.kdePackages.kdeconnect-kde
     kitty
     git
     openssh
-    pkgs.tree
-    pkgs.wl-clipboard
+    tree
+    wl-clipboard
     tmux
-    pkgs.devenv
-    pkgs.waydroid
-    pkgs.ollama
-    pkgs.youtube-music
-    firefox
+    devenv
   ];
 
   # Open ports in the firewall.

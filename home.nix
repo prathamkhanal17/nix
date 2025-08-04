@@ -9,7 +9,13 @@
   home.homeDirectory = "/home/prathamk";
   home.stateVersion = "25.05";
 
-  home.packages = [
+  home.packages = with pkgs; [
+  rofi-wayland
+  waybar
+  swww
+  python3
+  python3Packages.requests
+  wl-clipboard
   ];
 
   programs.fzf = {

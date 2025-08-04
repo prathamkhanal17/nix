@@ -15,7 +15,12 @@
 };
   time.timeZone = "Asia/Kathmandu";
   i18n.defaultLocale = "en_US.UTF-8";
-
+  environment.systemPackages = with pkgs; [
+	vscode
+	firefox
+	youtube-music
+	kdePackages.kdeconnect-kde
+  ];
   services.xserver.xkb = {
     layout = "us";
     variant = "";
