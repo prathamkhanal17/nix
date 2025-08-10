@@ -8,6 +8,7 @@
       free = "sudo nix-collect-garbage -d";
       p2n = "nix run github:nix-community/pip2nix -- generate";
       gedit = "gnome-text-editor";
+      gemini = "npx https://github.com/google-gemini/gemini-cli";
     };
 
 
@@ -15,7 +16,7 @@
     oh-my-zsh = {
       enable = true;
       theme = "agnoster";
-      plugins = [ "git"  ]; 
+      plugins = [ "git" "colorize" ]; 
     };
   };
 }

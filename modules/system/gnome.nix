@@ -4,7 +4,6 @@
     services.desktopManager.gnome.enable = true;
 
     environment.gnome.excludePackages = with pkgs.gnome; [
-        pkgs.evince
         pkgs.simple-scan
         pkgs.totem
         pkgs.yelp

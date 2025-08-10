@@ -7,12 +7,6 @@
     },
     "modules": [
         {
-        "type": "command",
-        "key": "  ",
-        "keyColor": "blue",
-        "text": "splash=$(hyprctl splash);echo $splash"
-        },
-        {
         "type": "custom",
         "format": "┌──────────────────────────────────────────┐"
         },
@@ -89,7 +83,7 @@
         },
         {
         "type": "memory",
-        "key": "   Memory ",
+        "key": "    Memory ",
         "keyColor": "magenta"
         },
         {
