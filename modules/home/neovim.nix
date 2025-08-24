@@ -14,12 +14,14 @@
 		plugins = with pkgs.vimPlugins; [
 		    {  
                 plugin = gruvbox-nvim;
-                config = "colorschem gruvbox";
-                   
-            }	
+                config = "colorscheme gruvbox";          
+                     }	
 			{
 				plugin = comment-nvim;
 				config = toLua "require(\"Comment\").setup()";
+			}
+			{
+			plugin = render-markdown-nvim;
 			}
 		];
 

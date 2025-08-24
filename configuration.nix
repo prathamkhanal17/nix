@@ -7,10 +7,20 @@
     ./modules/system/gnome.nix
     ./modules/system/vm.nix
     ./modules/system/hyprland.nix
+                #    ./modules/system/nvf.nix
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
+ hardware.bluetooth = {
+ enable = true;
+ powerOnBoot = true;
+ settings = {
+   General = {
+     Experimental = true; # Show battery charge of Bluetooth devices
+     };
+    };
+   };
+   services.blueman.enable=true;
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -67,4 +77,9 @@
 
   system.stateVersion = "25.05"; # Did you read the comment?
   nix.settings.substituters = [ "https://aseipp-nix-cache.global.ssl.fastly.net" ];
+
+
+    nix.gc.automatic = true;
+    nix.gc.dates = "daily"; # Or "weekly", "monthly", etc.
+    nix.gc.options = [ "--delete-older-than" "30d" ];
 }
