@@ -7,7 +7,6 @@
     ./modules/system/gnome.nix
     ./modules/system/vm.nix
     ./modules/system/hyprland.nix
-                #    ./modules/system/nvf.nix
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -80,6 +79,6 @@
 
 
     nix.gc.automatic = true;
-    nix.gc.dates = "daily"; # Or "weekly", "monthly", etc.
+    nix.gc.dates = "daily"; 
     nix.gc.options = [ "--delete-older-than" "30d" ];
 }
