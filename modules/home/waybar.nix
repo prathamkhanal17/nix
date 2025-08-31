@@ -181,13 +181,13 @@ in
         layer = "top";
         position = "top";
         height = 35;
-        modules-left = [ "hyprland/workspaces" ];
+        modules-left = [ "hyprland/workspaces" "mpris" ];
         modules-center = [ "group/center-group" ];
-        modules-right = [ "group/right-group" "tray" "custom/logout" ];
+        modules-right = [ "group/right-group" ];
 
         "group/center-group" = {
           orientation = "horizontal";
-          modules = [ "clock"  "idle_inhibitor" ];
+          modules = [ "clock" "hyprland/window"  "idle_inhibitor" ];
         };
 
         "group/right-group" = {
@@ -196,8 +196,10 @@ in
             "pulseaudio"
             "network"
             "backlight"
-            "power-profiles-daemon"
+            "memory"
             "battery"
+            "power-profiles-daemon"
+             "custom/logout"
           ];
         };
 
@@ -250,7 +252,7 @@ in
         };
 
         "hyprland/window" = {
-          format = "{class}:{title}";
+          format = "{class}";
           max-length = 20;
           separate-outputs = true;
         };
@@ -309,7 +311,7 @@ in
         };
 
         network = {
-          "format-wifi" = " ";
+          "format-wifi" = "  {essid}";
           "format-ethernet" = " {ifname}";
           "format-disconnected" = "⚠ Disconnected";
           "tooltip-format" = "{ifname} via {gwaddr} ";

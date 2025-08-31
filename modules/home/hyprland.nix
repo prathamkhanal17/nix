@@ -53,7 +53,7 @@
       general = {
         gaps_in = 5;
         gaps_out = 10;
-        border_size = 1;
+        border_size = 0;
         "col.active_border" = "rgb(D79921) rgb(fe8019) 120deg";
         "col.inactive_border" = "rgba(595959aa)";
         resize_on_border = false;
@@ -291,7 +291,7 @@ EOF
       #!/usr/bin/env bash
       set -euo pipefail
 
-      WALLPAPER="~/nix/wallpapers/gruvbox_image11.png"
+      WALLPAPER="/home/prathamk/nix/wallpapers/gruvbox-nix.png"
 
       if ! pgrep -x "swww-daemon" >/dev/null; then
         swww-daemon &

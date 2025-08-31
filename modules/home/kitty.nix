@@ -28,7 +28,6 @@
       cursor_shape beam
       cursor_trail 1
       include current-theme.conf
-      background_image /home/prathamk/nix/wallpapers/elias.jpg
       background_image_layout scaled
     '';
   };
