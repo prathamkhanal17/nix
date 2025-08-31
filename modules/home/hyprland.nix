@@ -53,7 +53,7 @@
       general = {
         gaps_in = 5;
         gaps_out = 10;
-        border_size = 2;
+        border_size = 1;
         "col.active_border" = "rgb(D79921) rgb(fe8019) 120deg";
         "col.inactive_border" = "rgba(595959aa)";
         resize_on_border = false;
@@ -64,8 +64,8 @@
       decoration = {
         rounding = 10;
         rounding_power = 2;
-        active_opacity = 0.90;
-        inactive_opacity = 0.89;
+        active_opacity = 1;
+        inactive_opacity = 1;
         shadow = { enabled = true; range = 4; render_power = 3; color = "rgba(1a1a1aee)"; };
         blur = { enabled = true; size = 3; passes = 2; vibrancy = 0.1696; };
       };
@@ -291,7 +291,7 @@ EOF
       #!/usr/bin/env bash
       set -euo pipefail
 
-      WALLPAPER="/home/prathamk/Pictures/wallpapers/2.jpg"
+      WALLPAPER="~/nix/wallpapers/gruvbox_image11.png"
 
       if ! pgrep -x "swww-daemon" >/dev/null; then
         swww-daemon &

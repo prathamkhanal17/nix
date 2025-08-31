@@ -10,6 +10,7 @@
     ./modules/home/waybar.nix
     ./modules/home/hyprland.nix
     ./modules/home/rofi.nix
+    ./modules/home/kitty.nix
   ];
   nixpkgs.config.allowUnfree = true;
 

@@ -4,8 +4,7 @@
   imports = [
     ./hosts/legion.nix
     ./hardware-configuration.nix
-    ./modules/system/gnome.nix
-    ./modules/system/vm.nix
+    ./modules/system/kde.nix
     ./modules/system/hyprland.nix
   ];
 

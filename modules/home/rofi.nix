@@ -78,7 +78,7 @@ dummywall {
   orientation: horizontal;
   children: [ "mode-switcher", "inputbar" ];
   background-color: transparent;
-  background-image: url("~\/Pictures\/wallpapers\/2.jpg", height);
+  background-image: url("~/nix/wallpapers/elias.png", height);
 }
 
 mode-switcher {
@@ -88,7 +88,7 @@ mode-switcher {
   padding: 9.2em 0.5em 9.2em 0.5em;
   spacing: 1.2em;
   background-color: transparent;
-  background-image: url("~\/Pictures\/wallpapers\/2.jpg", height);
+  background-image: url("~/nix/wallpapers/elias.png", height);
 }
 
 button {
