@@ -1,4 +1,5 @@
-{  programs.zsh = {
+{
+  programs.zsh = {
     enable = true;
     shellAliases = {
       ls = "ls --color=auto";
@@ -10,14 +11,16 @@
       gedit = "gnome-text-editor";
       gemini = "npx https://github.com/google-gemini/gemini-cli";
       del = "trash-put";
+      ff = "fastfetch";
     };
-
-
 
     oh-my-zsh = {
       enable = true;
       theme = "agnoster";
-      plugins = [ "git" "colorize" ]; 
+      plugins = [
+        "git"
+        "colorize"
+      ];
     };
   };
 }
