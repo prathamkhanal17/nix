@@ -22,7 +22,6 @@
 	kdePackages.kdeconnect-kde
   libreoffice
   nodejs
-  obsidian
   ];
   services.xserver.xkb = {
     layout = "us";

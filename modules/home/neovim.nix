@@ -10,20 +10,30 @@ let
 in
 {
   home.packages = with pkgs; [
+    # Core CLI
     ripgrep
     fd
     git
     stylua
     nixfmt-rfc-style
+
+    # Python runtime & tools
     python3
     python3Packages.debugpy
     python3Packages.pytest
     python3Packages.requests
+
+    # LSP / linters / formatters (Nix-only, no Mason)
     pyright
-    ruff # provides `ruff server` LSP
+    ruff            # provides `ruff server` LSP
     black
     isort
-    trash-cli  # <— for NvimTree trash support
+
+    # Markdown CLIs
+    pandoc
+    glow
+    nodePackages_latest.prettier
+    trash-cli      # for nvim-tree trash
   ];
 
   programs.neovim = {
@@ -32,14 +42,17 @@ in
     vimAlias = true;
     vimdiffAlias = true;
 
+    # Ensure binaries on PATH even if launching from a GUI
     extraPackages = with pkgs; [
       ripgrep
       fd
       pyright
       ruff
+      marksman
     ];
 
     plugins = with pkgs.vimPlugins; [
+      # Theme & UI
       gruvbox-nvim
       lualine-nvim
       nvim-web-devicons
@@ -50,9 +63,13 @@ in
       mini-icons
       nvim-autopairs
       vim-surround
+
+      # Core UX
       telescope-nvim
       plenary-nvim
       (nvim-treesitter.withAllGrammars)
+
+      # LSP / Completion / Formatting
       nvim-lspconfig
       nvim-cmp
       cmp-nvim-lsp
@@ -61,17 +78,28 @@ in
       luasnip
       friendly-snippets
       conform-nvim
+
+      # DAP
       nvim-dap
       nvim-dap-ui
       nvim-dap-virtual-text
+
+      # Markdown & editing
       comment-nvim
       render-markdown-nvim
+      markdown-preview-nvim
+      vim-table-mode
       vim-startify
+
+      # File tree
       nvim-tree-lua
+
+      # Misc
       vim2nix
     ];
 
     extraConfig = ''
+      " ===== Core editor =====
       let mapleader = " "
       set number relativenumber
       set tabstop=4 shiftwidth=4 expandtab
@@ -84,6 +112,7 @@ in
       set background=dark
       colorscheme gruvbox
 
+      " Common mappings
       nnoremap <leader>w :w<CR>
       nnoremap <leader>q :q<CR>
       nnoremap <leader>Q :qa!<CR>
@@ -95,39 +124,59 @@ in
       nnoremap <silent> <C-n> :NvimTreeToggle<CR>
       nnoremap <silent> <leader>nf :NvimTreeFindFile<CR>
 
+      " misc
       nnoremap <leader>v2 :Vim2Nix<CR>
       inoremap jk :<Esc>x
-    ''
-    + toLua ''
-      -- UI setup
+    '' + toLua ''
+      -- ===== UI =====
       require("lualine").setup({ options = { theme = "gruvbox" } })
       require("gitsigns").setup()
       require("todo-comments").setup()
       require("trouble").setup()
       require("nvim-autopairs").setup({})
-      require("render-markdown").setup({})
-      vim.keymap.set("n", "<leader>rm", "<cmd>RenderMarkdown toggle<CR>", { desc = "Markdown: toggle render" })
+      require("render-markdown").setup({})  -- inline MD render
+      vim.keymap.set("n", "<leader>rm", "<cmd>RenderMarkdown toggle<CR>", { desc = "Markdown: inline toggle" })
 
-      -- which-key
+      -- ===== which-key =====
       local wk = require("which-key")
       wk.setup({})
       local tb = require("telescope.builtin")
       wk.add({
         { "<leader>/", function() require("Comment.api").toggle.linewise.current() end, desc = "Toggle comment" },
+
         { "<leader>Q", ":qa!<CR>", desc = "Quit all (force)" },
         { "<leader>q", ":q<CR>",   desc = "Quit" },
         { "<leader>w", ":w<CR>",   desc = "Save" },
+
+        { "<leader>f",  group = "Find" },
         { "<leader>ff", function() tb.find_files() end,  desc = "Files" },
         { "<leader>fg", function() tb.live_grep() end,   desc = "Live grep" },
         { "<leader>fb", function() tb.buffers() end,     desc = "Buffers" },
         { "<leader>fh", function() tb.help_tags() end,   desc = "Help" },
-        { "<leader>fd", function() tb.diagnostics() end, desc = "Diagnostics" },
+        { "<leader>fd", function() tb.diagnostics() end, desc = "Diagnostics (workspace)" },
+
         { "<leader>n",  group = "File Tree" },
         { "<leader>nt", "<cmd>NvimTreeToggle<CR>",   desc = "Tree: Toggle" },
         { "<leader>nf", "<cmd>NvimTreeFindFile<CR>", desc = "Tree: Reveal file" },
+
+        { "<leader>m",  group = "Markdown" },
+        { "<leader>mp", "<cmd>MarkdownPreview<CR>",      desc = "Preview (browser)" },
+        { "<leader>ms", "<cmd>MarkdownPreviewStop<CR>",  desc = "Preview: stop" },
+        { "<leader>mt", "<cmd>TableModeToggle<CR>",      desc = "Table mode toggle" },
+
+        { "<leader>c",  group = "Code (LSP)" },
+        { "<leader>ca", vim.lsp.buf.code_action,         desc = "Code action" },
+        { "<leader>cd", vim.diagnostic.open_float,       desc = "Line diagnostics" },
+        { "<leader>cf", function() require("conform").format({ async = true }) end, desc = "Format buffer/selection" },
+        { "<leader>cr", vim.lsp.buf.rename,              desc = "Rename symbol" },
+        { "<leader>cl", group = "LSP" },
+        { "<leader>cli", ":LspInfo<CR>",                 desc = "LSP info" },
+
+        { "<leader>t",  group = "Trouble" },
+        { "<leader>tt", "<cmd>Trouble diagnostics toggle<CR>", desc = "Toggle Trouble" },
       })
 
-      -- Telescope
+      -- ===== Telescope =====
       local telescope = require("telescope")
       local actions = require("telescope.actions")
       telescope.setup({
@@ -143,19 +192,19 @@ in
         },
       })
 
-      -- Treesitter
+      -- ===== Treesitter =====
       local parser_dir = vim.fn.stdpath("data") .. "/treesitter"
       vim.opt.runtimepath:append(parser_dir)
       require("nvim-treesitter.configs").setup({
         parser_install_dir = parser_dir,
-        highlight = { enable = true },
+        highlight = { enable = true, additional_vim_regex_highlighting = false },
         indent = { enable = true },
         auto_install = false,
         sync_install = false,
         ensure_installed = {},
       })
 
-      -- nvim-tree (modern config with trash support)
+      -- ===== nvim-tree (with trash support) =====
       require("nvim-tree").setup({
         disable_netrw = true,
         hijack_netrw = true,
@@ -174,32 +223,27 @@ in
           open_file = { quit_on_open = false, resize_window = true },
         },
         trash = {
-          cmd = "trash",        -- provided by trash-cli
+          cmd = "trash",        -- requires trash-cli
           require_confirm = true,
         },
       })
 
-      -- Buffer-local mappings inside the tree (CRUD + clipboard)
       local function nvim_tree_on_attach(bufnr)
         local api = require("nvim-tree.api")
         local function map(lhs, rhs, desc)
           vim.keymap.set("n", lhs, rhs, { buffer = bufnr, noremap = true, silent = true, nowait = true, desc = "Tree: " .. desc })
         end
-        -- open / refresh / help
         map("<CR>",  api.node.open.edit,      "Open")
         map("o",     api.node.open.edit,      "Open")
         map("<C-r>", api.tree.reload,         "Refresh")
         map("?",     api.tree.toggle_help,    "Help")
-        -- create / delete / rename / duplicate
         map("a", api.fs.create,               "Create")
-        map("d", api.fs.remove,               "Delete")
+        map("d", api.fs.remove,               "Delete (trash)")
         map("r", api.fs.rename,               "Rename")
         map("y", api.fs.copy.node,            "Duplicate")
-        -- clipboard
         map("x", api.fs.cut,                  "Cut")
         map("c", api.fs.copy.node,            "Copy")
         map("p", api.fs.paste,                "Paste")
-        -- toggle dotfiles
         map("H", api.tree.toggle_hidden_filter, "Toggle dotfiles")
       end
       vim.api.nvim_create_autocmd("FileType", {
@@ -207,7 +251,11 @@ in
         callback = function(args) nvim_tree_on_attach(args.buf) end,
       })
 
-      -- Completion
+      -- ===== markdown-preview.nvim =====
+      vim.g.mkdp_auto_close = 1
+      vim.g.mkdp_filetypes = { "markdown", "mdx" }
+
+      -- ===== Completion (nvim-cmp) =====
       local cmp = require("cmp")
       local luasnip = require("luasnip")
       require("luasnip.loaders.from_vscode").lazy_load()
@@ -215,60 +263,104 @@ in
         snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
         mapping = cmp.mapping.preset.insert({
           ["<C-Space>"] = cmp.mapping.complete(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
-          ["<Tab>"] = cmp.mapping(function(fb)
+          ["<CR>"]      = cmp.mapping.confirm({ select = true }),
+          ["<Tab>"]     = cmp.mapping(function(fallback)
             if cmp.visible() then cmp.select_next_item()
             elseif luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
-            else fb() end
+            else fallback() end
           end, { "i","s" }),
-          ["<S-Tab>"] = cmp.mapping(function(fb)
+          ["<S-Tab>"]   = cmp.mapping(function(fallback)
             if cmp.visible() then cmp.select_prev_item()
             elseif luasnip.jumpable(-1) then luasnip.jump(-1)
-            else fb() end
+            else fallback() end
           end, { "i","s" }),
         }),
         sources = cmp.config.sources({ { name = "nvim_lsp" }, { name = "path" }, { name = "buffer" } }),
       })
 
-      -- LSP (Pyright + Ruff from Nix)
-      local lspconfig = require("lspconfig")
-      local caps = require("cmp_nvim_lsp").default_capabilities()
-      local util = require("lspconfig.util")
+      -- ===== LSP (Pyright + Ruff + Marksman) =====
+      local lspconfig    = require("lspconfig")
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local util         = require("lspconfig.util")
 
-      local function on_attach(_, bufnr)
+      local function lsp_on_attach(_, bufnr)
+        -- Comprehensive LSP keymaps (includes code action & diagnostics)
         local nmap = function(keys, func, desc)
           vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
         end
-        nmap("gd", vim.lsp.buf.definition, "Go to definition")
-        nmap("K", vim.lsp.buf.hover, "Hover docs")
+        -- navigation
+        nmap("gd", vim.lsp.buf.definition,       "Go to definition")
+        nmap("gD", vim.lsp.buf.declaration,      "Go to declaration")
+        nmap("gi", vim.lsp.buf.implementation,   "Go to implementation")
+        nmap("gr", vim.lsp.buf.references,       "List references")
+        nmap("g0", vim.lsp.buf.document_symbol,  "Document symbols")
+        nmap("K",  vim.lsp.buf.hover,            "Hover docs")
+        -- actions
+        nmap("<leader>ca", vim.lsp.buf.code_action, "Code action")
+        nmap("<leader>cr", vim.lsp.buf.rename,      "Rename symbol")
+        -- diagnostics
+        nmap("[d", vim.diagnostic.goto_prev,       "Prev diagnostic")
+        nmap("]d", vim.diagnostic.goto_next,       "Next diagnostic")
+        nmap("<leader>cd", vim.diagnostic.open_float, "Line diagnostics")
       end
 
       local root = util.root_pattern("pyproject.toml", "setup.cfg", "setup.py", "requirements.txt", ".git")
 
+      -- Python: Pyright
       lspconfig.pyright.setup({
-        on_attach = on_attach,
-        capabilities = caps,
+        on_attach = lsp_on_attach,
+        capabilities = capabilities,
         cmd = { "${pkgs.pyright}/bin/pyright-langserver", "--stdio" },
         root_dir = function(fname) return root(fname) or vim.loop.cwd() end,
+        settings = {
+          python = {
+            analysis = {
+              typeCheckingMode = "basic",
+              autoImportCompletions = true,
+            },
+          },
+        },
       })
 
+      -- Python: Ruff LSP via `ruff server`
       lspconfig.ruff.setup({
-        on_attach = on_attach,
-        capabilities = caps,
+        on_attach = lsp_on_attach,
+        capabilities = capabilities,
         cmd = { "${pkgs.ruff}/bin/ruff", "server" },
         root_dir = function(fname) return root(fname) or vim.loop.cwd() end,
+        init_options = { settings = { args = {} } },
       })
 
-      -- Conform
+      -- Markdown: Marksman LSP
+      lspconfig.marksman.setup({
+        on_attach = lsp_on_attach,
+        capabilities = capabilities,
+        cmd = { "${pkgs.marksman}/bin/marksman", "server" },
+        filetypes = { "markdown", "mdx" },
+        root_dir = util.root_pattern(".git", ".marksman.toml") or vim.loop.cwd,
+      })
+
+      -- ===== Conform (formatting) =====
       require("conform").setup({
-        format_on_save = { lsp_fallback = true },
-        formatters_by_ft = { python = { "isort","black" }, lua = { "stylua" } },
+        format_on_save = { lsp_fallback = true, timeout_ms = 1500 },
+        notify_on_error = false,
+        formatters_by_ft = {
+          python   = { "isort", "black" },
+          lua      = { "stylua" },
+          nix      = { "nixfmt" },
+          json     = { "prettier" },
+          markdown = { "prettier" },
+          ["markdown.mdx"] = { "prettier" },
+          yaml     = { "prettier" },
+        },
       })
-      vim.keymap.set({ "n","v" }, "<leader>cf", function() require("conform").format({ async = true }) end, { desc = "Format" })
+      vim.keymap.set({ "n","v" }, "<leader>cf", function()
+        require("conform").format({ async = true })
+      end, { desc = "Format buffer/selection" })
 
-      -- DAP (Python debugpy)
+      -- ===== DAP: Python (debugpy) =====
       require("nvim-dap-virtual-text").setup()
-      local dap,dapui = require("dap"), require("dapui")
+      local dap, dapui = require("dap"), require("dapui")
       dapui.setup()
       dap.adapters.python = {
         type = "executable",
@@ -280,7 +372,7 @@ in
           type = "python",
           request = "launch",
           name = "Launch file",
-          program = function() return vim.fn.expand("%:p") end,
+          program = function() return vim.fn.expand("%:p") end, -- current buffer path
           console = "integratedTerminal",
           pythonPath = function()
             if vim.env.VIRTUAL_ENV then return vim.env.VIRTUAL_ENV.."/bin/python" end
@@ -288,7 +380,15 @@ in
           end,
         },
       }
-      vim.keymap.set("n","<F5>",dap.continue,{desc="Debug: Continue"})
+      vim.keymap.set("n","<F5>",  dap.continue,      { desc = "Debug: Continue" })
+      vim.keymap.set("n","<F10>", dap.step_over,     { desc = "Debug: Step Over" })
+      vim.keymap.set("n","<F11>", dap.step_into,     { desc = "Debug: Step Into" })
+      vim.keymap.set("n","<F12>", dap.step_out,      { desc = "Debug: Step Out" })
+      vim.keymap.set("n","<leader>db", dap.toggle_breakpoint, { desc = "Debug: Toggle Breakpoint" })
+      vim.keymap.set("n","<leader>dB", function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
+        { desc = "Debug: Conditional BP" })
+      vim.keymap.set("n","<leader>dr", dap.repl.toggle, { desc = "Debug: REPL" })
+      vim.keymap.set("n","<leader>du", dapui.toggle,    { desc = "Debug: UI toggle" })
     '';
   };
 }

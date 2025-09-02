@@ -67,6 +67,7 @@
     devenv
     cava 
     cmus
+    unzip
     trash-cli
   ];
 
