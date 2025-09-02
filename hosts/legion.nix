@@ -20,10 +20,9 @@
 	firefox
 	youtube-music
 	kdePackages.kdeconnect-kde
-    libreoffice
-	jdk24
-    nodejs
-    obsidian
+  libreoffice
+  nodejs
+  obsidian
   ];
   services.xserver.xkb = {
     layout = "us";

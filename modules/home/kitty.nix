@@ -28,7 +28,8 @@
       cursor_shape beam
       cursor_trail 1
       include current-theme.conf
-      background_image_layout scaled
+      background #282828
     '';
   };
 }
+

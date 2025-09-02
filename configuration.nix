@@ -4,7 +4,7 @@
   imports = [
     ./hosts/legion.nix
     ./hardware-configuration.nix
-    ./modules/system/kde.nix
+    ./modules/system/gnome.nix
     ./modules/system/hyprland.nix
   ];
 
@@ -65,6 +65,9 @@
     tree
     tmux
     devenv
+    cava 
+    cmus
+    trash-cli
   ];
 
   # Open ports in the firewall.

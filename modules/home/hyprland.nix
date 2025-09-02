@@ -13,6 +13,7 @@
       "$fileManager" = "nautilus";
       "$menu" = "rofi -show drun";
       "$browser" = "firefox";
+      "$editor" = "code";
 
       exec-once = [
         "waybar"
@@ -108,8 +109,10 @@
         "$mainMod, T, exec, $terminal"
         "$mainMod, Q, killactive,"
         "$mainMod, M, exit,"
-        "$mainMod, E, exec, $fileManager"
+        "$mainMod, E, exec, $terminal -e yazi"
+        "$mainMod Control, E, exec, $fileManager"
         "$mainMod, W, togglefloating,"
+        "$mainMod, C, exec, $editor"
         "$mainMod, space, exec, $menu"
         "$mainMod, P, pseudo,"
         "$mainMod, J, togglesplit,"
