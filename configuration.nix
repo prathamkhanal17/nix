@@ -8,17 +8,20 @@
     ./modules/system/hyprland.nix
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
- hardware.bluetooth = {
- enable = true;
- powerOnBoot = true;
- settings = {
-   General = {
-     Experimental = true; # Show battery charge of Bluetooth devices
-     };
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        Experimental = true; # Show battery charge of Bluetooth devices
+      };
     };
-   };
-   services.blueman.enable=true;
+  };
+  services.blueman.enable = true;
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -39,7 +42,7 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-  
+
   security.rtkit.enable = true;
 
   networking.networkmanager.enable = true;
@@ -55,6 +58,8 @@
 
   environment.systemPackages = with pkgs; [
     neovim
+    gcc
+    clang
     fastfetch
     lshw
     btop
@@ -65,7 +70,7 @@
     tree
     tmux
     devenv
-    cava 
+    cava
     cmus
     unzip
     trash-cli
@@ -75,13 +80,12 @@
   # networking.firewall.allowedTCPPortRanges = [ {from=1714; to=1764;} ]; #kde connect
   # networking.firewall.allowedUDPPortRanges = [ {from=1714; to=1764;} ]; #kde connect
   # Or disable the firewall altogether.
-   networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   system.stateVersion = "25.05"; # Did you read the comment?
   nix.settings.substituters = [ "https://aseipp-nix-cache.global.ssl.fastly.net" ];
 
-
-    nix.gc.automatic = true;
-    nix.gc.dates = "daily"; 
-    nix.gc.options =  "--delete-older-than 30d";
+  nix.gc.automatic = true;
+  nix.gc.dates = "daily";
+  nix.gc.options = "--delete-older-than 30d";
 }
